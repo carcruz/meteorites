@@ -1,6 +1,11 @@
 import React from 'react';
 import { useStaticQuery, graphql } from 'gatsby';
-import * as d3 from 'd3';
+
+if (typeof fetch !== 'function') {
+  global.fetch = require('node-fetch-polyfill');
+}
+
+const csv = require('d3-fetch').csv;
 
 const Tool = () => {
   const query = useStaticQuery(graphql`
@@ -18,7 +23,7 @@ const Tool = () => {
 
   const filteredData = query.allFile.edges[0].node
   
-  d3.csv(filteredData.publicURL).then(data => {
+  csv(filteredData.publicURL).then(data => {
     console.log(data);
   })
 
